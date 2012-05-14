@@ -1,0 +1,14 @@
+xml schema diff utility.
+
+usage:
+        xsddiff -e localname [-n namespaceuri] -p <xsdfile>
+        xsddiff -e localname [-n namespaceuri] -d <xsdfile1> <xsdfile2>
+        xsddiff -r <xsdfile>
+
+where options are:
+  -p <xsdfile>              prints canonical representation of schema element
+  -d <xsdfile1> <xsdfile2>  prints diff of schema element in 2 xsd files
+  -r <xsdfile>              prints all dependent schemas of given xsd file
+  -e                        local part of element name
+  -n                        namespace uri of element
+  -h                        prints this help message
