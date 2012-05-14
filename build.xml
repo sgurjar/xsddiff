@@ -1,0 +1,75 @@
+<project name="xsddiff" default="compile" basedir=".">
+
+  <property name="src.dir"    value="src"/>
+  <property name="build.dir"  value="build"/>
+  <property name="lib.dir"    value="lib"/>
+  <property name="dist.dir"   value="dist"/>
+
+  <property name="compile.debug"        value="true"/>
+  <property name="compile.optimize"     value="true"/>
+  <property name="compile.target"       value="1.5"/>
+  <property name="compile.source"       value="1.5"/>
+  <property name="compile.deprecation"  value="true"/>
+
+  <path id="compile.class.path">
+    <!--
+      <pathelement location="${xml-apis.jar}" />
+      <pathelement location="${parser.jar}" />
+      -->
+    <fileset dir="${lib.dir}">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <path id="run.class.path">
+    <path refid="compile.class.path"/>
+    <pathelement location="${build.dir}"/>
+  </path>
+
+  <target name="init">
+    <tstamp/>
+  </target>
+
+  <target name="prepare" depends="init">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${dist.dir}/lib"/>
+  </target>
+
+  <target name="compile" depends="prepare" description="Compiles the source code">
+    <javac srcdir="${src.dir}" destdir="${build.dir}"
+      debug="${compile.debug}" optimize="${compile.optimize}"
+      target="${compile.target}" source="${compile.source}"
+      deprecation="${compile.deprecation}" includeAntRuntime="false">
+      <compilerarg value="-Xlint:all"/>
+      <classpath refid="compile.class.path"/>
+    </javac>
+  </target>
+
+  <target name="dist" depends="compile" description="generate the distribution">
+    <jar jarfile="${dist.dir}/lib/${ant.project.name}.jar">
+      <fileset dir="${build.dir}"/>
+      <fileset dir="${src.dir}"/>
+      <!-- uncomment if you want to distribute source with jar file -->
+      <!-- <manifest>
+          <attribute name="Main-Class" value="${main.class}"/>
+       </manifest>-->
+    </jar>
+    <copy todir="${dist.dir}/lib">
+      <fileset dir="${lib.dir}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+    <copy file="${ant.project.name}" todir="${dist.dir}"
+      preservelastmodified="Yes" failonerror="No"/>
+    <copy file="${ant.project.name}.bat" todir="${dist.dir}"
+      preservelastmodified="Yes" failonerror="No"/>
+    <zip destfile="${basedir}/${ant.project.name}-dist.zip"
+      basedir="${dist.dir}" update="true"/>
+  </target>
+
+  <target name="clean" description="clean up">
+    <delete dir="${build.dir}"/>
+    <delete dir="${dist.dir}"/>
+  </target>
+
+</project>

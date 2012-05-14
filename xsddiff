@@ -1,0 +1,14 @@
+#!/bin/bash
+h=~/work/xsddiff #put your dir here
+lib=$h/lib
+java \
+-Dprog=`basename $0` \
+-Ddebug= \
+-cp \
+$lib/relaxngDatatype-20020414.jar\
+:$lib/xsom.jar\
+:$lib/xsddiff.jar \
+sg.Runner $@
+
+# -Ddebug=XSDDiff:XSD                 colon separated classnames
+# -Ddebugfile=/temp/xsddiff.debug     debugfile name o/w print on stderr
